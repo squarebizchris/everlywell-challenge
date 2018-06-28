@@ -1,2 +1,10 @@
-<h1>Members#show</h1>
-<p>Find me in app/views/members/show.html.erb</p>
+<p>Name: <%= @member.name %></p>
+<p>Url: <%= @member.url %></p>
+<p>Short Url: <%= @member.short_url %></p>
+
+<h3>Headings</h3>
+<ul>
+  <% @headings.each do |heading| %>
+    <li><%= heading.header_text %></li>
+  <% end %>
+</ul>

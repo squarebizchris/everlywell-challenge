@@ -11,5 +11,17 @@
 #
 
 class Member < ApplicationRecord
+  after_create :scrape_headers
+
   validates :name, :url, presence: true
+
+  has_many :headings
+
+  private
+
+  def scrape_headers
+    scrape = HeaderScrape.new(self)
+    headers = scrape.grab_headers
+    headers.map{|h| self.headings.create(header_text: h) }
+  end
 end
