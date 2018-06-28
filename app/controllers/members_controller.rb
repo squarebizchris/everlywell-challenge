@@ -15,7 +15,7 @@ class MembersController < ApplicationController
     if !params[:search_string].blank?
       @search_results = []
       source_id = params[:root_member_id].to_i
-      matched_headings = Heading.where("header_text like ?", "%#{params[:search_string]}%")
+      matched_headings = Heading.where("header_text ILIKE ?", "%#{params[:search_string]}%")
       matched_headings.each do |heading|
         # set result variables
         destination_id = heading.member_id
