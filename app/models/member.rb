@@ -11,11 +11,13 @@
 #
 
 class Member < ApplicationRecord
-  after_create :scrape_headers, :shorten_url
-
-  validates :name, :url, presence: true
+  after_create :shorten_url, :scrape_headers
 
   has_many :headings
+  has_many :friendships
+  has_many :friends, through: :friendships
+
+  validates :name, :url, presence: true
 
   private
 

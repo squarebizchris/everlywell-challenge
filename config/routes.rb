@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   get 'members/new'
   get 'members/show'
 
-  # TODO add exclusions for un used routes
   resources :members
+  post '/make_friendship' => 'members#make_friendship', as: :make_friendship
 
   get 'site/index'
   root 'site#index'

@@ -7,7 +7,21 @@
 </div>
 <div class="row">
   <div class="col-6">
-    Friends
+    <h3>My Friendships</h3>
+    <ul>
+      <% @friends.each do |friend| %>
+        <li><%= link_to friend.name, member_path(friend.id) %></li>
+      <% end %>
+    </ul>
+
+    <hr />
+
+    <h3>Make Friendship</h3>
+    <ul>
+      <% @all_members.each do |member| %>
+        <li><%= member.name %> - <%= link_to "Make Friends", make_friendship_path(friend_id: member.id, id: @member.id), method: :post %></li>
+      <% end %>
+    </ul>
   </div>
   <div class="col-6">
     <h3>Headings</h3>

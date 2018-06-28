@@ -8,7 +8,7 @@
       <th>Member</th>
       <th>Url</th>
       <th>Short URL</th>
-      <th></th>
+      <th>Friends</th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +17,7 @@
         <td><%= link_to member.name, member %></td>
         <td><%= member.url %></td>
         <td><%= member.short_url %></td>
+        <td><%= member.friends.count %></td>
       </tr>
     <% end %>
   </tbody>
