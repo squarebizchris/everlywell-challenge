@@ -1,10 +1,28 @@
 <div class="row">
-  <div class="col-12">
+  <div class="col-6">
     <p>Name: <%= @member.name %></p>
     <p>Url: <%= @member.url %></p>
     <p>Short Url: <%= @member.short_url %></p>
   </div>
+  <div class="col-6">
+    <%= form_tag(member_path(@member), :method => "get", id: "search-form") do %>
+      <%= label_tag :search_string %>
+      <%= text_field_tag :search_string, params[:search_string] %>
+      <%= hidden_field_tag :root_member_id, @member.id %>
+      <%= submit_tag "Search", class: "btn btn-large btn-primary" %>
+    <% end %>
+    <hr />
+    <% if !@search_results.blank? %>
+      <h3>Search Results</h3>
+      <ul>
+        <% @search_results.each do |result| %>
+          <li><%= result[:heading] %> - <%= result[:path] %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
 </div>
+
 <div class="row">
   <div class="col-6">
     <h3>My Friendships</h3>

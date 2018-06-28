@@ -10,6 +10,20 @@ class MembersController < ApplicationController
     # Get all members not friends and self
     excluded_members = @friends.map(&:id).concat [params[:id]]
     @all_members = Member.where.not(id: excluded_members)
+
+    # Search Logic
+    if !params[:search_string].blank?
+      @search_results = []
+      source_id = params[:root_member_id].to_i
+      matched_headings = Heading.where("header_text like ?", "%#{params[:search_string]}%")
+      matched_headings.each do |heading|
+        # set result variables
+        destination_id = heading.member_id
+        heading_text = heading.header_text
+        @search_results << search_for_match(source_id, destination_id, heading_text)
+      end
+      @search_results.compact!
+    end
   end
 
   def create
@@ -41,4 +55,21 @@ class MembersController < ApplicationController
   def member_params
     params.require(:member).permit(:name, :url, :short_url)
   end
+
+  def search_for_match(source_id, destination_id, heading_text)
+    search_api = SearchAPI.new(source_id, destination_id)
+    path = search_api.search
+    if path.nil?
+      search_result = { heading: heading_text, path: 'Friendship not found'}
+    elsif path.length == 1
+      search_result = nil
+    else
+      pathway = []
+      path.map{|x| pathway << x.name}
+      path_string = pathway.join(",").gsub(',',' -> ')
+      search_result = { heading: heading_text, path: path_string}
+    end
+    search_result
+  end
+
 end
